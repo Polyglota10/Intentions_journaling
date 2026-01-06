@@ -1,0 +1,74 @@
+<script>
+const INTENTIONS = [
+  "I want to develop a more constantly loving and accepting relationship with myself.",
+  "I want an increasing capacity for self acceptance.",
+  "I want to learn to become the best possible friend to myself.",
+  "I want to attract, into my life, relationships that are based on love, respect, fairness and mutual support.",
+  "I want to uncover a full, uninhibited self expression.",
+  "I want to attain the best possible physical health.",
+  "I want to cultivate a balance of vitality and peace.",
+  "I want to attract, to myself, loving friends and loving community.",
+  "I want increasing freedom from toxic shame.",
+  "I want increasing freedom from unnecessary fear.",
+  "I want rewarding and fulfilling work.",
+  "I want a fair amount of peace of mind, spirit, soul and body.",
+  "I want to increase my capacity to play and have fun.",
+  "I want to make plenty of room for beauty and nature in my life.",
+  "I want sufficient physical and monetary resources.",
+  "I want a fair amount of help (self, human, or divine) to get what I need.",
+  "I want God's love, grace and blessing.",
+  "I want a balance of work, rest and play.",
+  "I want a balance of stability and change.",
+  "I want a balance of loving interaction and healthy self sufficiency.",
+  "I want a full emotional expression with a balance of laughter and tears.",
+  "I want sexual satisfaction.",
+  "I want to find effective and non-abusive ways to deal with anger.",
+  "I want all this for each and every other being."
+];
+
+const el = document.getElementById("intentionText");
+const btn = document.getElementById("newIntentBtn");
+
+let deck = [];
+let index = 0;
+
+function shuffleDeck() {
+  // make a fresh copy to avoid mutating original
+  deck = [...INTENTIONS];
+
+  // Fisher-Yates shuffle
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+
+  index = 0;
+}
+
+function showNextIntention() {
+  // reshuffle when we reach the end
+  if (index >= deck.length) {
+    shuffleDeck();
+  }
+
+  const text = deck[index];
+  index++;
+
+  el.classList.remove("show");
+
+  setTimeout(() => {
+    el.textContent = text;
+    el.classList.add("show");
+  }, 20);
+}
+
+// 👉 Only advance when button is clicked
+btn.addEventListener("click", showNextIntention);
+
+// 👉 Initial prompt
+el.textContent = "Click the button to begin the intention journey ☁️";
+el.classList.add("show");
+
+// prepare first shuffled order (but do not show yet)
+shuffleDeck();
+</script>

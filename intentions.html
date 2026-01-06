@@ -1,74 +1,322 @@
-<script>
-const INTENTIONS = [
-  "I want to develop a more constantly loving and accepting relationship with myself.",
-  "I want an increasing capacity for self acceptance.",
-  "I want to learn to become the best possible friend to myself.",
-  "I want to attract, into my life, relationships that are based on love, respect, fairness and mutual support.",
-  "I want to uncover a full, uninhibited self expression.",
-  "I want to attain the best possible physical health.",
-  "I want to cultivate a balance of vitality and peace.",
-  "I want to attract, to myself, loving friends and loving community.",
-  "I want increasing freedom from toxic shame.",
-  "I want increasing freedom from unnecessary fear.",
-  "I want rewarding and fulfilling work.",
-  "I want a fair amount of peace of mind, spirit, soul and body.",
-  "I want to increase my capacity to play and have fun.",
-  "I want to make plenty of room for beauty and nature in my life.",
-  "I want sufficient physical and monetary resources.",
-  "I want a fair amount of help (self, human, or divine) to get what I need.",
-  "I want God's love, grace and blessing.",
-  "I want a balance of work, rest and play.",
-  "I want a balance of stability and change.",
-  "I want a balance of loving interaction and healthy self sufficiency.",
-  "I want a full emotional expression with a balance of laughter and tears.",
-  "I want sexual satisfaction.",
-  "I want to find effective and non-abusive ways to deal with anger.",
-  "I want all this for each and every other being."
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cloud Intentions — Recovery Reminders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-const el = document.getElementById("intentionText");
-const btn = document.getElementById("newIntentBtn");
+  <style>
+    :root {
+      --sky: #e8f3ff;
+      --sky-light: #f5f9ff;
+      --sky-deep: #90b7ff;
+      --cloud: #ffffff;
+      --cloud-soft: #f0f6ff;
+      --text-main: #2f3b52;
+      --text-soft: #60708f;
+      --accent: #5c8cff;
+    }
 
-let deck = [];
-let index = 0;
+    * {
+      box-sizing: border-box;
+    }
 
-function shuffleDeck() {
-  // make a fresh copy to avoid mutating original
-  deck = [...INTENTIONS];
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      background: linear-gradient(to bottom, #cfe5ff, #e8f3ff 45%, #f5f9ff);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text-main);
+      overflow: hidden;
+    }
 
-  // Fisher-Yates shuffle
-  for (let i = deck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [deck[i], deck[j]] = [deck[j], deck[i]];
-  }
+    /* subtle floating clouds */
+    .clouds {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-  index = 0;
-}
+    .cloud {
+      position: absolute;
+      width: 180px;
+      height: 70px;
+      border-radius: 50px;
+      background: var(--cloud);
+      box-shadow:
+        40px 10px 0 10px var(--cloud),
+        90px 5px 0 8px var(--cloud),
+        20px 25px 0 12px var(--cloud);
+      opacity: 0.55;
+      filter: blur(0.5px);
+      animation: float 28s linear infinite;
+    }
 
-function showNextIntention() {
-  // reshuffle when we reach the end
-  if (index >= deck.length) {
-    shuffleDeck();
-  }
+    .cloud:nth-child(2) {
+      top: 30%;
+      left: -20%;
+      animation-duration: 34s;
+    }
 
-  const text = deck[index];
-  index++;
+    .cloud:nth-child(3) {
+      top: 65%;
+      left: -25%;
+      animation-duration: 30s;
+    }
 
-  el.classList.remove("show");
+    @keyframes float {
+      from {
+        transform: translateX(-20vw);
+      }
+      to {
+        transform: translateX(120vw);
+      }
+    }
 
-  setTimeout(() => {
-    el.textContent = text;
+    .widget {
+      position: relative;
+      z-index: 2;
+      width: min(520px, 100%);
+      background: var(--cloud-soft);
+      border-radius: 28px;
+      padding: 1.2rem 1.25rem 1.35rem;
+      border: 1px solid rgba(140, 170, 220, 0.35);
+      box-shadow:
+        0 18px 40px rgba(120, 150, 210, 0.35),
+        0 0 0 2px rgba(220, 235, 255, 0.7);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .icon-cloud {
+      width: 34px;
+      height: 30px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ffffff, #dcebff);
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      box-shadow: 0 10px 20px rgba(140, 170, 220, 0.6);
+      border: 1px solid rgba(90, 130, 210, 0.45);
+    }
+
+    .title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .badge {
+      padding: 0.28rem 0.65rem;
+      border-radius: 999px;
+      background: #eaf1ff;
+      border: 1px solid #c9dbff;
+      color: var(--text-soft);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .card {
+      margin-top: 0.5rem;
+      background: radial-gradient(circle at top, #ffffff, #f5f8ff 65%);
+      border: 1px dashed rgba(140, 170, 220, 0.6);
+      border-radius: 20px;
+      padding: 1rem 0.9rem 1rem;
+      position: relative;
+      min-height: 90px;
+    }
+
+    .card::before {
+      content: "☁";
+      position: absolute;
+      top: 0.5rem;
+      right: 0.8rem;
+      opacity: 0.35;
+      color: var(--accent);
+    }
+
+    .intention {
+      font-size: 1rem;
+      line-height: 1.45;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+
+    .intention.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .button-bar {
+      margin-top: 0.65rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    button {
+      border-radius: 999px;
+      border: 1px solid #b5cbff;
+      background: linear-gradient(135deg, #cfe2ff, #a8c4ff);
+      padding: 0.45rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #24375c;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: 0 10px 18px rgba(120, 150, 210, 0.45);
+      transition: transform 0.08s ease, box-shadow 0.12s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(1px) scale(0.985);
+    }
+
+    .cite {
+      margin-top: 0.7rem;
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .cite span {
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="clouds">
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+  </div>
+
+  <div class="widget">
+    <div class="header">
+      <div class="title-wrap">
+        <div class="icon-cloud">☁️</div>
+        <div class="title">Recovery Intentions</div>
+      </div>
+      <div class="badge">blue cloud edition</div>
+    </div>
+
+    <div class="card">
+      <div id="intentionText" class="intention"></div>
+    </div>
+
+    <div class="button-bar">
+      <button id="newIntentBtn">🌤 New intention</button>
+    </div>
+
+    <div class="cite">
+      Intentions for Recovery — <span>excerpted from
+      “The Tao of Fully Feeling” by Pete Walker, MFT</span>
+    </div>
+  </div>
+
+  <script>
+    const INTENTIONS = [
+      "I want to develop a more constantly loving and accepting relationship with myself.",
+      "I want an increasing capacity for self acceptance.",
+      "I want to learn to become the best possible friend to myself.",
+      "I want to attract, into my life, relationships that are based on love, respect, fairness and mutual support.",
+      "I want to uncover a full, uninhibited self expression.",
+      "I want to attain the best possible physical health.",
+      "I want to cultivate a balance of vitality and peace.",
+      "I want to attract, to myself, loving friends and loving community.",
+      "I want increasing freedom from toxic shame.",
+      "I want increasing freedom from unnecessary fear.",
+      "I want rewarding and fulfilling work.",
+      "I want a fair amount of peace of mind, spirit, soul and body.",
+      "I want to increase my capacity to play and have fun.",
+      "I want to make plenty of room for beauty and nature in my life.",
+      "I want sufficient physical and monetary resources.",
+      "I want a fair amount of help (self, human, or divine) to get what I need.",
+      "I want God's love, grace and blessing.",
+      "I want a balance of work, rest and play.",
+      "I want a balance of stability and change.",
+      "I want a balance of loving interaction and healthy self sufficiency.",
+      "I want a full emotional expression with a balance of laughter and tears.",
+      "I want sexual satisfaction.",
+      "I want to find effective and non-abusive ways to deal with anger.",
+      "I want all this for each and every other being."
+    ];
+
+    const el = document.getElementById("intentionText");
+    const btn = document.getElementById("newIntentBtn");
+
+    let deck = [];
+    let index = 0;
+
+    function shuffleDeck() {
+      // fresh copy
+      deck = [...INTENTIONS];
+
+      // Fisher–Yates shuffle
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+
+      index = 0;
+    }
+
+    function showNextIntention() {
+      // reshuffle when we've gone through all
+      if (index >= deck.length) {
+        shuffleDeck();
+      }
+
+      const text = deck[index];
+      index++;
+
+      el.classList.remove("show");
+
+      // tiny delay so the fade animation restarts
+      setTimeout(() => {
+        el.textContent = text;
+        el.classList.add("show");
+      }, 20);
+    }
+
+    // only advance when button is clicked
+    btn.addEventListener("click", showNextIntention);
+
+    // initial prompt only
+    el.textContent = "Click the button to begin the intention journey ☁️";
     el.classList.add("show");
-  }, 20);
-}
 
-// 👉 Only advance when button is clicked
-btn.addEventListener("click", showNextIntention);
-
-// 👉 Initial prompt
-el.textContent = "Click the button to begin the intention journey ☁️";
-el.classList.add("show");
-
-// prepare first shuffled order (but do not show yet)
-shuffleDeck();
-</script>
+    // prepare the first shuffled order (but don't show it yet)
+    shuffleDeck();
+  </script>
+</body>
+</html>
